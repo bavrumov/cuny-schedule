@@ -3,26 +3,22 @@ import java.util.ArrayList;
 
 public class ScheduleList {
 
-	private ArrayList<CourseList> result;
+	private ArrayList<MixedCourseList> result;
 	private static CourseList current = new CourseList("");
 	
 	public ScheduleList(ArrayList<CourseList> Lists) {
-		result=new ArrayList<CourseList>();
+		result=new ArrayList<MixedCourseList>();
 		GeneratePermutations(Lists,result,0);
-		for (CourseList c : result)
-			c.setMixed();
 	}
 	
-	private static void GeneratePermutations(ArrayList<CourseList> Lists, ArrayList<CourseList> result, int depth)
+	private static void GeneratePermutations(ArrayList<CourseList> Lists, ArrayList<MixedCourseList> result, int depth)
 	{
-	    if(depth == Lists.size())
-	    {
-	       CourseList temp = new CourseList(current);
+	    if(depth == Lists.size()) {
+	       MixedCourseList temp = new MixedCourseList(current);
 	       result.add(temp);	       
 	       return;
 	     }
-	    for(int i = 0; i < Lists.get(depth).size(); ++i)
-	    {
+	    for(int i = 0; i < Lists.get(depth).size(); ++i) {
 		  current.addCourse(Lists.get(depth).getCourse(i));
 	        GeneratePermutations(Lists, result, depth + 1);
 	        current.remove(current.size()-1);
@@ -39,14 +35,18 @@ public class ScheduleList {
 		return removed;
 	}
 	
-	public ArrayList<CourseList> getPossibleSchedules() {
+	public ArrayList<MixedCourseList> getPossibleSchedules() {
 		return result;
+	}
+	
+	public int size() {
+		return result.size();
 	}
 	
 	public String toString() {
 		String o="";
 		for (int i=0; i<result.size(); i++)
-			o+=("Schedule "+(i+1)+": {\n "+result.get(i)+"}\n\n");
+			o+=("Schedule "+(i+1)+": "+result.get(i)+"\n\n");
 		return o;
 	}
 }

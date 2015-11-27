@@ -13,41 +13,48 @@ public class Main {
 			printHelp();
 		int courseNums=0;
 		Scanner ui=new Scanner(System.in);
-		Scanner fileScan=new Scanner("init");
+		Scanner fileScan=new Scanner("dummytext"); //initial value incase user is done before dropping any files.
 		String fileName="";
 		File courseFile;
 		Schedule mySched=new Schedule();
-		while (courseNums<6) {
+		while (courseNums<6) {	//
 			System.out.println("Drag course file #"+(courseNums+1)+" here now:");
 			fileName=ui.nextLine();
-			if (fileName.equalsIgnoreCase("done")) {
+			if (fileName.equalsIgnoreCase("done")) { //User typed "done", beak out of while loop.
 				fileScan.close();
 				break;
 			}
 			fileName=fileName.replace("\\", "").trim(); //Removes backslash and trailing space.
 			courseFile=new File(fileName);
-			try {
+			try {	//Checks if file exists, catches nonexistent. If file exists, makes sure size is valid.
 				fileScan=new Scanner(courseFile);
-				String courseName=mySched.addCourseList(fileName);
-				System.out.println("Class \""+courseName+"\" has been added to your schedule.");
+				int count = 0;
+				while (fileScan.hasNextLine()) {
+					count++;
+					fileScan.nextLine();
+				}
+				if (count<=90 && count%9==0) { //10 classes at most, 9-line class formatting from cunyfirst
+					String courseName=mySched.addCourseList(fileName);
+					System.out.println("Class \""+courseName+"\" has been added to your schedule.");
+					courseNums++;
+				}
+				else
+					System.out.println("That file is invalid.  Either it contains more than 10 classes, or you pasted in the classes incorrectly.");
 			} catch (FileNotFoundException e) {
 				System.out.println("That file doesn't seem to exist. Try Again.");
-				courseNums--;
 			}
 			System.out.println();
-			courseNums++;
 		}
 		ui.close();
-		System.out.println("Program has accepted "+courseNums+" files succesfully.\n");
-		//System.out.println(mySched);
+		if (courseNums==0) {
+			System.out.println("You have not submitted any files.  Goodbye.");
+			return;
+		}
+		System.out.println("Program has accepted this many files succesfully: "+courseNums+"\n");
 		ScheduleList allSched=mySched.generateAllScheduleCombinations();
+		System.out.println(allSched.removeAbsurdities()+" schedules were absurd.  Here are the remaining schedules to choose from:");
+		System.out.println(allSched);
 		//System.out.println(allSched);
-		int k=allSched.removeAbsurdities();
-		System.out.println(k+" schedules were absurd. \n"+allSched);
-		//System.out.println(mySched.getCourseList(0));
-		//System.out.println("This courseList contains conflicting courses. "+mySched.getCourseList(0).containsConflictingCourses());
-		//for (int i=0; i<7; i++)
-		//	System.out.println(mySched.getCourseList(0).getCourse(2).getDOTW()[i]);
 	}
 
 	private static void printHelp() {
@@ -56,5 +63,7 @@ public class Main {
 		System.out.println("3. Type 'done' without quotes (and press enter) so that the program can process your files.\n");
 		System.out.println(" >It is HIGHLY recommended to name your files based on the class sections in it (e.g. Physics.txt, English.txt).");
 		System.out.println(" >The program will accept 6 files max, if you've entered 6 then processing will start automatically.\n");
+		System.out.println("Classes pasted from CUNYfirst have the following format: (anything in quotes is the exact word found in all pasted courses)");
+		System.out.println(	"CLASS_NUMBER\nSECTION\n\"Regular\"\nDAY(S)&TIME\nLOCATION\nPROFESSOR\nTERM_DATES\n\" Open\"\n\"select\"\n");
 	}
 }

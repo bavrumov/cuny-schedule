@@ -39,8 +39,11 @@ public class Schedule {
 	
 	public String toString() {
 		String o="";
-		for (int i=0; i<sched.size(); i++)
-			o+=classNames.get(i)+":\n"+sched.get(i).toString()+"\n";
+		if (sched.size()<=4096) //4^6 or 8^4
+			for (int i=0; i<sched.size(); i++)
+				o+=classNames.get(i)+":\n"+sched.get(i).toString()+"\n";
+		else
+			o="There are over 4096 schedules, your computer will take too long time to display them.  So it won't.";
 		return o;
 	}
 	

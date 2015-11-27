@@ -29,7 +29,7 @@ public class Course {
 
 	public boolean conflictsWith(Course c) { //true if courses overlap, false if courses touch and/or don't overlap
 		boolean timeConflict=(c.startTime>=startTime && c.startTime<endTime) || (c.endTime>startTime && c.endTime<=endTime);
-		boolean dateConflict=false; // || (c.startTime<startTime && c.endTime>endTime) || (startTime<c.startTime && endTime>c.endTime);
+		boolean dateConflict=false;	 //(c.startTime<startTime && c.endTime>endTime) || (startTime<c.startTime && endTime>c.endTime);
 		for (int i=0; i<7; i++)
 			if (dotw[i]==true && dotw[i]==c.dotw[i]) {
 				dateConflict=true;
