@@ -54,7 +54,6 @@ public class Main {
 		ScheduleList allSched=mySched.generateAllScheduleCombinations();
 		System.out.println(allSched.removeAbsurdities()+" schedules were absurd.  Here are the remaining schedules to choose from:");
 		System.out.println(allSched);
-		//System.out.println(allSched);
 	}
 
 	private static void printHelp() {

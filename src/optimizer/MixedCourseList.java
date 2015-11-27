@@ -35,4 +35,8 @@ public class MixedCourseList extends CourseList{
 		o=o.substring(0,o.length()-1)+"}"; //removes trailing space and adds bracket
 		return o;
 	}	
+	
+	public void setAllNames(String n) {
+		return;	//Overrides parent, A MixedCourseList should never have a uniform name
+	}
 }

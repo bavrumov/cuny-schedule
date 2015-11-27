@@ -1,11 +1,11 @@
 package optimizer;
 
-public class Course {
+public class Course implements Comparable<Course>{
 
 	private int classNumber; //UID
 	private String section;
-	private String days; //MoTuWeThFrSaSu 
-	private boolean[] dotw=new boolean[7];
+	private String days; //contains a subset of {MoTuWeThFrSaSu}
+	private boolean[] dotw=new boolean[7]; //days of the week
 	private String room;
 	private String professor;
 	private String humanStart;
@@ -34,7 +34,7 @@ public class Course {
 			if (dotw[i]==true && dotw[i]==c.dotw[i]) {
 				dateConflict=true;
 				break;
-			}//System.out.println(timeConflict+" and "+dateConflict);
+			}
 		return timeConflict && dateConflict;
 	}
 	
@@ -42,7 +42,7 @@ public class Course {
 		return (" "+classNumber+" "+section+" "+days+" From "+humanStart+" to "+humanEnd+"\n   With "+professor+" at "+room);
 	}
 	
-	private void parseDays() {
+	private void parseDays() {	//each true in the array means class is held on that index's day of the week. [0]=Sunday, [6]=Saturday.
 		String[] d={"Su","Mo","Tu","We","Th","Fr","Sa"};
 		for (int i=0; i<7; i++)
 			if (days.indexOf(d[i])!=-1)
@@ -50,12 +50,16 @@ public class Course {
 	}
 	
 	private static double parseTime(String t) {
-		String AorP=t.substring(t.length() - 2);
-		String first=t.split(":")[0];
-		String second=t.split(":")[1].substring(0, 2);
-		if ((AorP.equals("AM")) == (first.equals("12")))	//Breaks down if 12AM
+		String AorP=t.substring(t.length() - 2);			//Stores either AM or PM
+		String first=t.split(":")[0];							//Stores hour
+		String second=t.split(":")[1].substring(0, 2); 	//Stores minute
+		boolean isAm=AorP.equals("AM"); 				//true if AM
+		boolean is12=first.equals("12");					//true if hour is 12
+		if (isAm && is12)											// 12:30AM becomes 0.5
+			return Double.parseDouble(second)/60;
+		if (!(isAm || is12)) 										//if its neither AM or 12, ie. 2:15PM, return 14.25
 			return 12+Double.parseDouble(first)+Double.parseDouble(second)/60;
-		return Double.parseDouble(first)+Double.parseDouble(second)/60;
+		return Double.parseDouble(first)+Double.parseDouble(second)/60; //else 10:20AM becomes 10.3333...
 	}
 	
 	public double duration() {
@@ -108,5 +112,21 @@ public class Course {
 	
 	public void setName(String n) {
 		name=n;
+	}
+
+	public int compareTo(Course o) {		//if this is earlier than other, returns -1. if this is later than other, returns 1.
+		for (int i=0; i<7; i++) {
+			if (dotw[i] && !o.getDOTW()[i])	//This Day1 comes earlier
+				return -1;
+			if (!dotw[i] && o.getDOTW()[i])	//Other Day1 comes earlier
+				return 1;
+			if (dotw[i] && o.getDOTW()[i])	//Day1 on the same day
+				break;
+		}
+		if (startTime<o.getStartTime()) //Starts before Other
+			return -1;
+		if (startTime>o.getStartTime()) //Starts after Other
+			return 1;
+		return 0;	//Only happens if courses start at the same time on the same day (conflicting courses)
 	}
 }

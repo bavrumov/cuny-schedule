@@ -53,7 +53,7 @@ public class CourseList {
 								g=raw.get(i);
 							else
 								if (i%9==8)
-									getCourses().add(new Course(a,b,c,d,e,f,g));
+									courses.add(new Course(a,b,c,d,e,f,g));
 		}
 	}
 
