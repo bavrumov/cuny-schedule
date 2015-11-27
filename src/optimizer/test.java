@@ -32,6 +32,10 @@ public class test {
 		System.out.println();
 		z=allCombos(f,empty);
 		System.out.println(z);*/
+			//System.out.println(mySched.getCourseList(0));
+			//System.out.println("This courseList contains conflicting courses. "+mySched.getCourseList(0).containsConflictingCourses());
+			//for (int i=0; i<7; i++)
+			//	System.out.println(mySched.getCourseList(0).getCourse(2).getDOTW()[i]);
 	}
 	
 }
