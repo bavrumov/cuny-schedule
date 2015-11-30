@@ -46,21 +46,28 @@ public class MixedCourseList extends CourseList{
 		return o;
 	}	
 	
-	public void setAllNames(String n) {
-		return;	//Overrides parent, A MixedCourseList should never have a uniform name
-	}
+	/*public double duration() { //Tells you how many hours are spent on campus
+		double dur=0;
+		for (boolean day: classDays) {
+			if (day) {
+				
+			}
+		
+		}	
+		return dur;
+	}*/
 	
-	public void sort() {	//Insertion sort by when class begins
+	public void sort() {	//Insertion sort, earliest class comes first, latest class last.
 	      int i, j;
-	      Course newValue;
-	      for (i=1; i<this.size(); i++) {
-	            newValue = this.getCourse(i);
+	      Course tmp;
+	      for (i=1; i<size(); i++) {
+	            tmp=getCourse(i);
 	            j=i;
-	            while (j>0 && this.getCourse(j - 1).compareTo(newValue)>0) {
-	                  this.getCourses().set(j, this.getCourse(j-1));
+	            while (j>0 && getCourse(j-1).compareTo(tmp)>0) {
+	                  getCourses().set(j, getCourse(j-1));
 	                  j--;
 	            }
-	            this.getCourses().set(j,newValue);
+	            getCourses().set(j,tmp);
 	      }
 	}
 }

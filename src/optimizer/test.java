@@ -17,10 +17,6 @@ public class test {
 		Course c3=new Course(345,"sec3","WeTh","2:00PM","3:15PM","Boylan","Foax");
 		Course c4=new Course(984,"sec4","ThFrSu","10:15AM","11:15AM","WEB","Neng");
 		Course c5=new Course(100,"sec0","Fr","10:15PM","11:15PM","WEB","test");
-		/*System.out.println(c1);
-		System.out.println(c2);
-		System.out.println(c1.compareTo(c2));*/
-		//c1.setName("1"); c2.setName("2"); c3.setName("3"); c4.setName("4"); c5.setName("5");
 		MixedCourseList unsorted=new MixedCourseList();
 		unsorted.addCourse(c5,"5");
 		unsorted.addCourse(c1,"1");

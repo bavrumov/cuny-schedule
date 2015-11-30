@@ -15,7 +15,8 @@ public class Schedule {
 		classNames.add((fname.split("/")[fname.split("/").length-1]).replace(".txt",""));
 		CourseList myCourse=new CourseList(fname);
 		sched.add(myCourse);
-		myCourse.setAllNames(classNames.get(classNames.size()-1));
+		for (Course c: myCourse.getCourses())
+			c.setName(classNames.get(classNames.size()-1));
 		return classNames.get(classNames.size()-1);
 	}
 	

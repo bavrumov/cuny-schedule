@@ -19,7 +19,8 @@ public class Main {
 		}
 		System.out.println("Program has accepted this many files succesfully: "+courseNums+"\n");
 		ScheduleList allSched=mySched.generateAllScheduleCombinations();
-		System.out.println(allSched.removeAbsurdities()+" schedules were absurd.  Here are the remaining schedules to choose from:");
+		System.out.println("Out of the "+allSched.size()+" generated schedules, "+allSched.removeAbsurdities()+" were absurd.");
+		System.out.println(" Here are the remaining "+allSched.size()+" schedules to choose from, no classes overlap:");
 		for (MixedCourseList mx: allSched.getPossibleSchedules())
 			mx.sort();
 		System.out.println(allSched);

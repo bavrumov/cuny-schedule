@@ -57,11 +57,6 @@ public class CourseList {
 		}
 	}
 
-	public void setAllNames(String s) {
-		for (Course c : getCourses())
-			c.setName(s);
-	}
-	
 	public void addCourse(Course c) {
 		courses.add(c);
 	}

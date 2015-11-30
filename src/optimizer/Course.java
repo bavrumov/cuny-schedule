@@ -8,9 +8,9 @@ public class Course implements Comparable<Course>{
 	private boolean[] dotw=new boolean[7]; //days of the week
 	private String room;
 	private String professor;
-	private String humanStart;
+	private String humanStart;  //Times used for display, 9:30AM, 10:00PM
 	private String humanEnd;
-	private double startTime; //Time 9:30=9.5. 12:45=12.75.
+	private double startTime; //Time 9:30=9.5. 12:45=12.75. For mathematical operations.
 	private double endTime;  //Time 4:55 PM = 16.91666.
 	private String name;
 	
@@ -29,7 +29,7 @@ public class Course implements Comparable<Course>{
 
 	public boolean conflictsWith(Course c) { //true if courses overlap, false if courses touch and/or don't overlap
 		boolean timeConflict=(c.startTime>=startTime && c.startTime<endTime) || (c.endTime>startTime && c.endTime<=endTime);
-		boolean dateConflict=false;	 //(c.startTime<startTime && c.endTime>endTime) || (startTime<c.startTime && endTime>c.endTime);
+		boolean dateConflict=false;
 		for (int i=0; i<7; i++)
 			if (dotw[i]==true && dotw[i]==c.dotw[i]) {
 				dateConflict=true;
@@ -60,6 +60,22 @@ public class Course implements Comparable<Course>{
 		if (!(isAm || is12)) 										//if its neither AM or 12, ie. 2:15PM, return 14.25
 			return 12+Double.parseDouble(first)+Double.parseDouble(second)/60;
 		return Double.parseDouble(first)+Double.parseDouble(second)/60; //else 10:20AM becomes 10.3333...
+	}
+	
+	public int compareTo(Course o) {		//if this is earlier than other, returns -1. if this is later than other, returns 1.
+		for (int i=0; i<7; i++) {
+			if (dotw[i] && !o.getDOTW()[i])	//This Day1 comes earlier
+				return -1;
+			if (!dotw[i] && o.getDOTW()[i])	//Other Day1 comes earlier
+				return 1;
+			if (dotw[i] && o.getDOTW()[i])	//Day1 on the same day
+				break;
+		}
+		if (startTime<o.getStartTime()) //Starts before Other
+			return -1;
+		if (startTime>o.getStartTime()) //Starts after Other
+			return 1;
+		return 0;	//Only happens if courses start at the same time on the same day (conflicting courses)
 	}
 	
 	public double duration() {
@@ -112,21 +128,5 @@ public class Course implements Comparable<Course>{
 	
 	public void setName(String n) {
 		name=n;
-	}
-
-	public int compareTo(Course o) {		//if this is earlier than other, returns -1. if this is later than other, returns 1.
-		for (int i=0; i<7; i++) {
-			if (dotw[i] && !o.getDOTW()[i])	//This Day1 comes earlier
-				return -1;
-			if (!dotw[i] && o.getDOTW()[i])	//Other Day1 comes earlier
-				return 1;
-			if (dotw[i] && o.getDOTW()[i])	//Day1 on the same day
-				break;
-		}
-		if (startTime<o.getStartTime()) //Starts before Other
-			return -1;
-		if (startTime>o.getStartTime()) //Starts after Other
-			return 1;
-		return 0;	//Only happens if courses start at the same time on the same day (conflicting courses)
 	}
 }
