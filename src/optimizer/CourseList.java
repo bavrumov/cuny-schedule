@@ -63,7 +63,7 @@ public class CourseList {
 	}
 	
 	public void addCourse(Course c) {
-		getCourses().add(c);
+		courses.add(c);
 	}
 	
 	public Course getCourse(int i) {

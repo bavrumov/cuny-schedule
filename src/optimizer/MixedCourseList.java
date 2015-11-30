@@ -8,7 +8,17 @@ public class MixedCourseList extends CourseList{
 		super(c);
 		fillClassDays();
 	}
+	
+	public MixedCourseList() {
+		super("");
+	}
 
+	public void addCourse(Course c, String name) {
+		c.setName(name);
+		getCourses().add(c);
+		fillClassDays();
+	}
+	
 	public boolean containsConflictingCourses() {
 		for (Course c1 : getCourses())
 			for (Course c2 : getCourses())
@@ -16,7 +26,7 @@ public class MixedCourseList extends CourseList{
 					return true;
 		return false;
 	}
-
+	
 	private void fillClassDays() {
 		for (Course c: getCourses())
 			for (int i=0; i<7; i++)
@@ -38,5 +48,19 @@ public class MixedCourseList extends CourseList{
 	
 	public void setAllNames(String n) {
 		return;	//Overrides parent, A MixedCourseList should never have a uniform name
+	}
+	
+	public void sort() {	//Insertion sort by when class begins
+	      int i, j;
+	      Course newValue;
+	      for (i=1; i<this.size(); i++) {
+	            newValue = this.getCourse(i);
+	            j=i;
+	            while (j>0 && this.getCourse(j - 1).compareTo(newValue)>0) {
+	                  this.getCourses().set(j, this.getCourse(j-1));
+	                  j--;
+	            }
+	            this.getCourses().set(j,newValue);
+	      }
 	}
 }

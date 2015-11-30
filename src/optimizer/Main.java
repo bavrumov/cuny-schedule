@@ -11,13 +11,27 @@ public class Main {
 		catch (ArrayIndexOutOfBoundsException e) {help=false;}
 		if (help) //prints instructions if user asked for help
 			printHelp();
+		Schedule mySched=new Schedule();
+		int courseNums=readFiles(mySched);
+		if (courseNums==0) {
+			System.out.println("You have not submitted any files.  Goodbye.");
+			return;
+		}
+		System.out.println("Program has accepted this many files succesfully: "+courseNums+"\n");
+		ScheduleList allSched=mySched.generateAllScheduleCombinations();
+		System.out.println(allSched.removeAbsurdities()+" schedules were absurd.  Here are the remaining schedules to choose from:");
+		for (MixedCourseList mx: allSched.getPossibleSchedules())
+			mx.sort();
+		System.out.println(allSched);
+	}
+
+	private static int readFiles(Schedule ms) {
 		int courseNums=0;
 		Scanner ui=new Scanner(System.in);
 		Scanner fileScan=new Scanner("dummytext"); //initial value incase user is done before dropping any files.
 		String fileName="";
 		File courseFile;
-		Schedule mySched=new Schedule();
-		while (courseNums<6) {	//
+		while (courseNums<6) {	//You can submit 6 files max
 			System.out.println("Drag course file #"+(courseNums+1)+" here now:");
 			fileName=ui.nextLine();
 			if (fileName.equalsIgnoreCase("done")) { //User typed "done", beak out of while loop.
@@ -34,7 +48,7 @@ public class Main {
 					fileScan.nextLine();
 				}
 				if (count<=90 && count%9==0) { //10 classes at most, 9-line class formatting from cunyfirst
-					String courseName=mySched.addCourseList(fileName);
+					String courseName=ms.addCourseList(fileName);
 					System.out.println("Class \""+courseName+"\" has been added to your schedule.");
 					courseNums++;
 				}
@@ -46,16 +60,9 @@ public class Main {
 			System.out.println();
 		}
 		ui.close();
-		if (courseNums==0) {
-			System.out.println("You have not submitted any files.  Goodbye.");
-			return;
-		}
-		System.out.println("Program has accepted this many files succesfully: "+courseNums+"\n");
-		ScheduleList allSched=mySched.generateAllScheduleCombinations();
-		System.out.println(allSched.removeAbsurdities()+" schedules were absurd.  Here are the remaining schedules to choose from:");
-		System.out.println(allSched);
+		return courseNums;
 	}
-
+	
 	private static void printHelp() {
 		System.out.println("1. Drag a course file into this window and hit enter.\n");
 		System.out.println("2. Repeat step 1 until you have entered all your courses.\n");
