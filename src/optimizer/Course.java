@@ -50,16 +50,15 @@ public class Course implements Comparable<Course>{
 	}
 	
 	private static double parseTime(String t) {
-		String AorP=t.substring(t.length() - 2);		//Stores either AM or PM
-		String first=t.split(":")[0];					//Stores hour
-		String second=t.split(":")[1].substring(0, 2); 	//Stores minute
-		boolean isAm=AorP.equals("AM"); 				//true if AM
-		boolean is12=first.equals("12");				//true if hour is 12
-		if (isAm && is12)								// 12:30AM becomes 0.5
-			return Double.parseDouble(second)/60;
-		if (!(isAm || is12))							//if its neither AM or 12, ie. 2:15PM, return 14.25
-			return 12+Double.parseDouble(first)+Double.parseDouble(second)/60;
-		return Double.parseDouble(first)+Double.parseDouble(second)/60; //else 10:20AM becomes 10.3333...
+		String hour=t.split(":")[0];
+		String minute=t.split(":")[1].substring(0, 2);
+		boolean isAm=t.substring(t.length() - 2).equals("AM"); 	//true if string ends in AM
+		boolean is12=hour.equals("12");
+		if (isAm && is12)					// 12:30AM becomes 0.5
+			return Double.parseDouble(minute)/60;
+		if (!(isAm || is12))		//if its neither AM or 12, ie. 2:15PM, return 14.25
+			return 12+Double.parseDouble(hour)+Double.parseDouble(minute)/60;
+		return Double.parseDouble(hour)+Double.parseDouble(minute)/60; //else 10:20AM becomes 10.3333...
 	}
 	
 	public int compareTo(Course o) {		//if this is earlier than other, returns -1. if this is later than other, returns 1.

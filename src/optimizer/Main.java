@@ -24,6 +24,7 @@ public class Main {
 		for (MixedCourseList mx: allSched.getPossibleSchedules())
 			mx.sort();
 		System.out.println(allSched);
+		
 	}
 
 	private static int readFiles(Schedule ms) {
