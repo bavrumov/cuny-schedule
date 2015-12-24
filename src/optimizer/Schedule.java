@@ -49,7 +49,7 @@ public class Schedule {
 	}
 	
 	public ScheduleList generateAllScheduleCombinations() {
-		ScheduleList s=new ScheduleList(sched);
+		ScheduleList s=new ScheduleList(sched, true);
 		return s;
 	}
 }

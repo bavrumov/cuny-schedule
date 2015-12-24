@@ -53,7 +53,7 @@ public class MixedCourseList extends CourseList{
 		return o;
 	}	
 	
-	public double duration() { //Calculates how many hours are spent on campus per week.
+	public double duration() { //Calculates how many hours are spent on campus per week. Only works if courses are sorted.
 		double dur=0;
 		for (int i=0; i<classDays.length; i++) {
 			if (classDays[i]) {

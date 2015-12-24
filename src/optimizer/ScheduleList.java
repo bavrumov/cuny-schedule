@@ -6,9 +6,18 @@ public class ScheduleList {
 	private ArrayList<MixedCourseList> result;
 	private static CourseList current = new CourseList("");
 	
-	public ScheduleList(ArrayList<CourseList> Lists) {
+	public ScheduleList(ArrayList<CourseList> Lists, boolean permut) {
 		result=new ArrayList<MixedCourseList>();
-		GeneratePermutations(Lists,result,0);
+		if (permut)
+			GeneratePermutations(Lists,result,0);
+	}
+	
+	public ScheduleList(ArrayList<MixedCourseList> courses) {
+		result=courses;
+	}
+	
+	public ScheduleList(ScheduleList c) {
+		result=c.getPossibleSchedules();
 	}
 	
 	private static void GeneratePermutations(ArrayList<CourseList> Lists, ArrayList<MixedCourseList> result, int depth)
@@ -37,6 +46,10 @@ public class ScheduleList {
 	
 	public ArrayList<MixedCourseList> getPossibleSchedules() {
 		return result;
+	}
+	
+	public MixedCourseList getList(int i) {
+		return result.get(i);
 	}
 	
 	public int size() {

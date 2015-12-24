@@ -1,6 +1,7 @@
 package optimizer;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -20,17 +21,39 @@ public class Main {
 		System.out.println("Program has accepted this many files succesfully: "+courseNums+"\n");
 		ScheduleList allSched=mySched.generateAllScheduleCombinations();
 		System.out.println("Out of the "+allSched.size()+" generated schedules, "+allSched.removeAbsurdities()+" were absurd.");
-		System.out.println(" Here are the remaining "+allSched.size()+" schedules to choose from, no classes overlap:");
 		for (MixedCourseList mx: allSched.getPossibleSchedules())
 			mx.sort();
-		System.out.println(allSched);
-		
+		//System.out.println(" Here are the remaining "+allSched.size()+" schedules to choose from, no classes overlap:\n\n"+allSched);
+		ScheduleList top3duration=getSmallestScheduleDurations(allSched, 3);
+		System.out.println("Here are the top 3 schedules where you spend least number of hours on campus:\n\n"+top3duration);
+	}
+
+	private static ScheduleList getSmallestScheduleDurations(ScheduleList S, int top) {
+		ScheduleList allSched=new ScheduleList(S);
+		MixedCourseList temp; //Selection sort, var top is # of passes
+		int first, lastIdx=allSched.size()-1;
+		for (int i=lastIdx; i>lastIdx-top; i--) {
+			first=0;
+			for(int j=1; j<=i; j++) {
+				if(allSched.getList(j).duration()<allSched.getList(first).duration())
+					first=j;
+	         	}
+			temp=allSched.getList(first);
+			allSched.getPossibleSchedules().set(first, allSched.getList(i));
+			allSched.getPossibleSchedules().set(i, temp);
+		}           
+		ArrayList<MixedCourseList> sorted=new ArrayList<MixedCourseList>();
+		while (top>0) { //Pops last MixedCourseList off, top times
+			sorted.add(allSched.getPossibleSchedules().remove(allSched.size()-1));
+			top--;
+		}
+		return new ScheduleList(sorted);
 	}
 
 	private static int readFiles(Schedule ms) {
 		int courseNums=0;
 		Scanner ui=new Scanner(System.in);
-		Scanner fileScan=new Scanner("dummytext"); //initial value incase user is done before dropping any files.
+		Scanner fileScan=new Scanner("dummytext"); //initial value in case user is done before dropping any files.
 		String fileName="";
 		File courseFile;
 		while (courseNums<6) {	//You can submit 6 files max
