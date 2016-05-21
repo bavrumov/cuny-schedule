@@ -1,6 +1,6 @@
 package optimizer;
 
-public class MixedCourseList extends CourseList{
+public class MixedCourseList extends CourseList implements Comparable<MixedCourseList>{
 
 	private boolean[] classDays=new boolean[7];
 	
@@ -91,5 +91,17 @@ public class MixedCourseList extends CourseList{
 	            }
 	            getCourses().set(j,tmp);
 	      }
+	}
+	
+	public int compareTo(MixedCourseList o) {	//Less days returns -1; same days and less duration returns -1; 
+		if (this.numClassDays()<o.numClassDays())
+			return -1;
+		if (this.numClassDays()>o.numClassDays())
+			return 1;
+		if (this.duration()<o.duration())
+			return -1;
+		if (this.duration()>o.duration())
+			return 1;
+		return 0; //Same days and same duration
 	}
 }

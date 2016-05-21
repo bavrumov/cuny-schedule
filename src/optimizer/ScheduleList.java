@@ -6,9 +6,9 @@ public class ScheduleList {
 	private ArrayList<MixedCourseList> result;
 	private static CourseList current = new CourseList("");
 	
-	public ScheduleList(ArrayList<CourseList> Lists, boolean permut) {
+	public ScheduleList(ArrayList<CourseList> Lists, boolean permute) {
 		result=new ArrayList<MixedCourseList>();
-		if (permut)
+		if (permute)
 			GeneratePermutations(Lists,result,0);
 	}
 	
